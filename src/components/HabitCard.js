@@ -27,7 +27,8 @@ const HabitCard = props => {
         <Card className={classes.root}>
             <CardActionArea>
                 <CardContent>
-                    {props.title}
+                    {props.name} <br />
+                    Last update: {new Date(props.lastClicked).toString()}
                 </CardContent>
             </CardActionArea>
         </Card>

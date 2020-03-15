@@ -1,21 +1,44 @@
 import React, { useState } from 'react';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
-import HabitCard from './components/card';
+import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
+import IconButton from '@material-ui/core/IconButton';
+import HabitCard from './components/HabitCard';
+import FormDialog from './components/FormDialog';
 
 export default function App() {
-  const [cards] = useState([{ title: 'A new card' }, { title: 'Another card' }, { title: 'Last card' }]);
+  const [cards, setCards] = useState([
+    { name: 'A new card', timeframe: 'daily', lastClicked: new Date().getTime() },
+    { name: 'Another card', timeframe: 'weekly', lastClicked: new Date().getTime() },
+    { name: 'Last card', timeframe: 'monthly', lastClicked: new Date().getTime() }
+  ]);
 
-  /*const addCardHandler = card => {
-    setCards(previousCards => [...previousCards, { title: card.title }])
-  }*/
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleAddHabit = card => {
+    setCards(previousCards => [...previousCards, { name: card.name, timeframe: card.timeframe, lastClicked: card.lastClicked }])
+  }
   return (
-    <Container maxWidth="sm">
+    <Container>
       <Box my={4}>
         {cards.map((element, i) => {
-          return (<HabitCard key={i} title={element.title} />);
+          return (<HabitCard key={i} name={element.name} lastClicked={element.lastClicked}/>);
         })}
       </Box>
+
+      <IconButton aria-label="delete" className='margin' onClick={handleOpen}>
+        <AddCircleOutlineRoundedIcon fontSize="large" />
+      </IconButton>
+
+      <FormDialog open={open} handleOpen={handleOpen} handleClose={handleClose} handleAddHabit={handleAddHabit}></FormDialog>
     </Container>
   );
 }
