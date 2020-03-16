@@ -46,9 +46,10 @@ const FormDialog = (props) => {
           </DialogContentText>
             <TextField
               autoFocus
+              autoComplete="off"
               margin="dense"
               id="name"
-              label="Habit"
+              label="Name"
               type="text"
               fullWidth
               value={name}

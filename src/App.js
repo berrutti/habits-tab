@@ -1,5 +1,5 @@
 /* global chrome */ // This is needed so ESLint wont cry about it
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
@@ -8,23 +8,12 @@ import HabitCard from './components/HabitCard';
 import FormDialog from './components/FormDialog';
 
 export default function App() {
-  const [cards, setCards] = useState([
-    { name: 'A new card', timeframe: 'daily', lastClicked: new Date().getTime() },
-    { name: 'Another card', timeframe: 'weekly', lastClicked: new Date().getTime() },
-    { name: 'Last card', timeframe: 'monthly', lastClicked: new Date().getTime() }
-  ]);
+  const [cards, setCards] = useState([]);
 
   const [open, setOpen] = useState(false);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const handleAddCard = card => {
+    loadChromeBrowserData();
     setCards(previousCards => [...previousCards, { name: card.name, timeframe: card.timeframe, lastClicked: card.lastClicked }]) // TODO: Check name uniqueness
   }
 
@@ -32,8 +21,16 @@ export default function App() {
     setCards(previousCards => previousCards.filter(card => card.name !== name));
   }
 
+  useEffect(() => {
+    chrome.storage.sync.get(['cards'], (result) => {
+      if (result.cards) {
+        setCards(result.cards)
+      }
+    });
+  });
+
   const loadChromeBrowserData = () => {
-    if (chrome) {
+    if (1 == 3) {
       chrome.storage.sync.get(['cards'], (result) => {
         console.log('The cards are ' + result.cards);
       });
@@ -49,13 +46,13 @@ export default function App() {
       </Box>
 
       <Box display="flex" flexWrap="wrap" justifyContent="center" alignItems="center">
-        <IconButton aria-label="add-habit" onClick={handleOpen}>
+        <IconButton aria-label="add-habit" onClick={() => setOpen(true)}>
           <AddCircleOutlineRoundedIcon fontSize="large" />
         </IconButton>
       </Box>
 
 
-      <FormDialog open={open} handleOpen={handleOpen} handleClose={handleClose} handleAddCard={handleAddCard}></FormDialog>
+      <FormDialog open={open} handleClose={() => setOpen(false)} handleAddCard={handleAddCard}></FormDialog>
     </Container>
   );
 }
