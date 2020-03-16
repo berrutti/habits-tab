@@ -6,20 +6,10 @@ import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
 
 const HabitCard = props => {
   const useStyles = makeStyles({
-    root: {
+    card: {
       minWidth: 275,
-    },
-    bullet: {
-      display: 'inline-block',
-      margin: '0 2px',
-      transform: 'scale(0.8)',
-    },
-    title: {
-      fontSize: 14,
-    },
-    pos: {
-      marginBottom: 12,
-    },
+      margin: '1rem'
+    }
   });
 
   const classes = useStyles();
@@ -29,8 +19,9 @@ const HabitCard = props => {
   }
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.card}>
       <CardHeader
+        title={props.name}
         action={
           <IconButton onClick={props.handleDelete.bind(this, props.name)} aria-label="settings">
             <CloseRoundedIcon />
@@ -38,8 +29,7 @@ const HabitCard = props => {
         } />
       <CardActionArea onClick={handleCardClick}>
         <CardContent>
-          {props.name} <br />
-            Last update: {new Date(props.lastClicked).toString()}
+          Updated on {new Date(props.lastClicked).toLocaleDateString()}
         </CardContent>
       </CardActionArea>
     </Card>

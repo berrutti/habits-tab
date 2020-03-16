@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "Habits Tab",
+  "version": "1.0.0",
+  "description": "A Tab to remind you of your habits. Replaces your browser's default New Tab.",
+  "icons": {
+    "128": "img/icon128.png",
+    "48": "img/icon48.png",
+    "16": "img/icon16.png"
+  },
+  "chrome_url_overrides" : {
+    "newtab": "app/index.html"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "content_security_policy": "script-src 'self' 'sha256-Mm1A7BqMO1epTNcEael3g21KMJOq6Qnx31mAkRWg/w8='; object-src 'self'"
+}
