@@ -30,7 +30,7 @@ const FormDialog = (props) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    props.handleAddHabit({ name: name, timeframe: timeframe, lastClicked: new Date().getTime() });
+    props.handleAddCard({ name: name, timeframe: timeframe, lastClicked: new Date().getTime() });
     setName('');
     setTimeframe('daily');
   }

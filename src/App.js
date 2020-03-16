@@ -23,14 +23,19 @@ export default function App() {
     setOpen(false);
   };
 
-  const handleAddHabit = card => {
-    setCards(previousCards => [...previousCards, { name: card.name, timeframe: card.timeframe, lastClicked: card.lastClicked }])
+  const handleAddCard = card => {
+    setCards(previousCards => [...previousCards, { name: card.name, timeframe: card.timeframe, lastClicked: card.lastClicked }]) // TODO: Check name uniqueness
   }
+
+  const handleDeleteCard = name => {
+    setCards(previousCards => previousCards.filter(card => card.name !== name));
+  }
+
   return (
     <Container>
       <Box my={4}>
         {cards.map((element, i) => {
-          return (<HabitCard key={i} name={element.name} lastClicked={element.lastClicked}/>);
+          return (<HabitCard key={i} name={element.name} lastClicked={element.lastClicked} handleDelete={handleDeleteCard} />);
         })}
       </Box>
 
@@ -38,7 +43,7 @@ export default function App() {
         <AddCircleOutlineRoundedIcon fontSize="large" />
       </IconButton>
 
-      <FormDialog open={open} handleOpen={handleOpen} handleClose={handleClose} handleAddHabit={handleAddHabit}></FormDialog>
+      <FormDialog open={open} handleOpen={handleOpen} handleClose={handleClose} handleAddCard={handleAddCard}></FormDialog>
     </Container>
   );
 }
