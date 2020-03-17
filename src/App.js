@@ -13,8 +13,14 @@ export default function App() {
   const [open, setOpen] = useState(false);
 
   const handleAddCard = card => {
-    loadChromeBrowserData();
-    setCards(previousCards => [...previousCards, { name: card.name, timeframe: card.timeframe, lastClicked: card.lastClicked }]) // TODO: Check name uniqueness
+    setCards(previousCards => [
+      ...previousCards,
+      {
+        name: card.name,
+        timeframe: card.timeframe,
+        lastClicked: card.lastClicked
+      }
+    ]) // TODO: Check name uniqueness
   }
 
   const handleDeleteCard = name => {
@@ -28,14 +34,6 @@ export default function App() {
       }
     });
   });
-
-  const loadChromeBrowserData = () => {
-    if (1 == 3) {
-      chrome.storage.sync.get(['cards'], (result) => {
-        console.log('The cards are ' + result.cards);
-      });
-    }
-  }
 
   return (
     <Container>
