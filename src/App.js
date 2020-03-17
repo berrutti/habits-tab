@@ -13,27 +13,28 @@ export default function App() {
   const [open, setOpen] = useState(false);
 
   const handleAddCard = card => {
-    setCards(previousCards => [
-      ...previousCards,
-      {
-        name: card.name,
-        timeframe: card.timeframe,
-        lastClicked: card.lastClicked
-      }
-    ]) // TODO: Check name uniqueness
+    setCards(previousCards => {
+      const cards = [...previousCards, card];
+      chrome.storage.sync.set({ cards }, () => { });
+      return cards;
+    }) // TODO: Check name uniqueness
   }
 
   const handleDeleteCard = name => {
-    setCards(previousCards => previousCards.filter(card => card.name !== name));
+    setCards(previousCards => {
+      const cards = previousCards.filter(card => card.name !== name);
+      chrome.storage.sync.set({ cards }, () => { });
+      return cards;
+    });
   }
 
   useEffect(() => {
-    chrome.storage.sync.get(['cards'], (result) => {
-      if (result.cards) {
-        setCards(result.cards)
+    chrome.storage.sync.get(['cards'], (data) => {
+      if (data.cards) {
+        setCards(data.cards);
       }
-    });
-  });
+    })
+  }, []);
 
   return (
     <Container>
