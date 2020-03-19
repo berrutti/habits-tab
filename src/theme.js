@@ -17,6 +17,15 @@ const theme = createMuiTheme({
       default: '#f8f9fa',
     },
   },
+  overrides: {
+    MuiCssBaseline: {
+      "@global": {
+        body: {
+          backgroundImage: 'linear-gradient(90deg, #020080 0%, #090979 35%, #00D4A1 100%)'
+        }
+      }
+    }
+  }
 });
 
 export default theme;

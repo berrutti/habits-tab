@@ -21,6 +21,7 @@ const HabitCard = ({ name, timeframe, lastClicked, currentTime, handleDelete, ha
 
   const useStyles = makeStyles({
     card: {
+      color: 'white',
       minWidth: 275,
       margin: '1rem',
       backgroundColor: getBackgroundColor()
