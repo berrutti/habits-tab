@@ -31,7 +31,7 @@ const HabitCard = ({ name, lastClicked, currentTime, handleDelete, handleUpdate 
         } />
       <CardActionArea onClick={handleUpdate.bind(this, name)}>
         <CardContent>
-          Updated on {new Date(lastClicked).getTime()}
+          Updated on {new Date(lastClicked).toLocaleDateString()}
         </CardContent>
       </CardActionArea>
     </Card>
@@ -39,5 +39,3 @@ const HabitCard = ({ name, lastClicked, currentTime, handleDelete, handleUpdate 
 }
 
 export default HabitCard;
-
-// Updated on {new Date(lastClicked).toLocaleDateString()}

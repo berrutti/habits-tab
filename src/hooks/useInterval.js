@@ -18,6 +18,4 @@ export default function useInterval(callback, delay) {
   }, [delay]);
 }
 
-//export default useInterval;
-
-// This code is from Dan Abramov: https://overreacted.io/making-setinterval-declarative-with-react-hooks/
+// This hook was created by Dan Abramov: https://overreacted.io/making-setinterval-declarative-with-react-hooks/

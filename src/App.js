@@ -7,64 +7,41 @@ import IconButton from '@material-ui/core/IconButton';
 import HabitCard from './components/HabitCard';
 import FormDialog from './components/FormDialog';
 import useInterval from './hooks/useInterval';
+import getCurrentMiliseconds from './utils/miliseconds'
 
 export default function App() {
   const [cards, setCards] = useState([]);
-
   const [open, setOpen] = useState(false);
-
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentTime, setCurrentTime] = useState(getCurrentMiliseconds());
 
   useInterval(() => {
-    const now = new Date().getTime();
-    console.log('Nos is now',now);
-    setCurrentTime(now);
+    setCurrentTime(getCurrentMiliseconds());
   }, 5000);
 
   useEffect(() => {
-    console.log('Use event listener')
-    chrome.storage.onChanged.addListener((changes, namespace) => {
-      console.log('added new cards', changes)
-      console.log('added new namespace', namespace)
-      //setCards(changes['cards'].newValue)
+    chrome.storage.onChanged.addListener((changes) => {
+      setCards(changes['cards'].newValue);
     });
   }, []);
-  
+
 
   const handleAddCard = card => {
-    console.log('Add card')
-    setCards(previousCards => {
-      const cards = [...previousCards, card];
-      chrome.storage.sync.set({ cards }, () => { });
-      return cards;
-    }) // TODO: Check name uniqueness
+    chrome.storage.sync.set({ cards: [...cards, card] });
   }
 
   const handleDeleteCard = name => {
-    console.log('Delete card')
-    setCards(previousCards => {
-      const cards = previousCards.filter(card => card.name !== name);
-      chrome.storage.sync.set({ cards }, () => { });
-      return cards;
-    });
+    chrome.storage.sync.set({ cards: cards.filter(card => card.name !== name) });
   }
 
   const handleUpdateCard = name => {
-    setCards(previousCards => {
-      const card = previousCards.find(card => card.name === name);
-      card.lastClicked = new Date().getTime();
-      console.log('Updated card',name, card.lastClicked)
-      chrome.storage.sync.set({ cards }, () => { });
-      return cards;
-    });
+    const cardToUpdate = cards.find(currentCard => currentCard.name === name);
+    cardToUpdate.lastClicked = getCurrentMiliseconds();
+    chrome.storage.sync.set({ cards });
   }
 
   useEffect(() => {
-    console.log('Use effect get cards')
     chrome.storage.sync.get(['cards'], (data) => {
-      if (data.cards) {
-        setCards(data.cards);
-      }
+      if (data.cards) setCards(data.cards);
     })
   }, []);
 

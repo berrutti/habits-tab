@@ -14,6 +14,7 @@ import {
   TextField
 } from '@material-ui/core';
 
+import getCurrentMiliseconds from '../utils/miliseconds';
 
 const FormDialog = (props) => {
   const [name, setName] = useState('');
@@ -30,7 +31,7 @@ const FormDialog = (props) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    props.handleAddCard({ name: name, timeframe: timeframe, lastClicked: new Date().getTime() });
+    props.handleAddCard({ name: name, timeframe: timeframe, lastClicked: getCurrentMiliseconds() });
     setName('');
     setTimeframe('daily');
   }
