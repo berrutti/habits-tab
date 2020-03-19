@@ -17,7 +17,7 @@ import {
 import getCurrentMiliseconds from '../utils/miliseconds';
 import { TIMEFRAMES } from '../utils/constants';
 
-const FormDialog = (props) => {
+const AddCardDialog = ({ open, handleClose, handleAddCard }) => {
   const [name, setName] = useState('');
   const [timeframe, setTimeframe] = useState(TIMEFRAMES.Daily);
 
@@ -32,20 +32,20 @@ const FormDialog = (props) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    props.handleAddCard({ name, timeframe, lastClicked: getCurrentMiliseconds() });
+    handleAddCard({ name, timeframe, lastClicked: getCurrentMiliseconds() });
     setName('');
     setTimeframe(TIMEFRAMES.Daily);
   }
 
   return (
     <div>
-      <Dialog open={props.open} onClose={props.handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <form onSubmit={handleSubmit}>
           <DialogTitle id="form-dialog-title">Add a New Habit</DialogTitle>
           <DialogContent>
             <DialogContentText>
               To add a new Habit, please add a Name and select a Timeframe.
-          </DialogContentText>
+            </DialogContentText>
             <TextField
               autoFocus
               autoComplete="off"
@@ -57,15 +57,13 @@ const FormDialog = (props) => {
               value={name}
               onChange={handleNameChange}
             />
-            <FormControl>
+            <FormControl fullWidth>
               <InputLabel id="timeframe-label">Timeframe</InputLabel>
               <Select
                 labelId="timeframe-label"
                 id="timeframe"
                 value={timeframe}
-                fullWidth
-                onChange={handleTimeframeChange}
-              >
+                onChange={handleTimeframeChange}>
                 <MenuItem value={TIMEFRAMES.Daily}>Daily</MenuItem>
                 <MenuItem value={TIMEFRAMES.Weekly}>Weekly</MenuItem>
                 <MenuItem value={TIMEFRAMES.Monthly}>Monthly</MenuItem>
@@ -73,10 +71,10 @@ const FormDialog = (props) => {
             </FormControl>
           </DialogContent>
           <DialogActions>
-            <Button onClick={props.handleClose} color="primary">
+            <Button onClick={handleClose} color="primary">
               Cancel
           </Button>
-            <Button onClick={props.handleClose} type="submit" color="primary">
+            <Button onClick={handleClose} type="submit" color="primary">
               Add
           </Button>
           </DialogActions>
@@ -86,4 +84,4 @@ const FormDialog = (props) => {
   );
 }
 
-export default FormDialog;
+export default AddCardDialog;

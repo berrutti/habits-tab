@@ -25,6 +25,9 @@ const HabitCard = ({ name, timeframe, lastClicked, currentTime, handleDelete, ha
       minWidth: 275,
       margin: '1rem',
       backgroundColor: getBackgroundColor()
+    },
+    cardContent: {
+      padding: '20px'
     }
   });
 
@@ -40,8 +43,8 @@ const HabitCard = ({ name, timeframe, lastClicked, currentTime, handleDelete, ha
           </IconButton>
         } />
       <CardActionArea onClick={handleUpdate.bind(this, name)}>
-        <CardContent>
-          Updated on {new Date(lastClicked).toLocaleDateString()}
+        <CardContent className={classes.cardContent}>
+          <h3>Last update on {new Date(lastClicked).toLocaleString()}</h3>
         </CardContent>
       </CardActionArea>
     </Card>

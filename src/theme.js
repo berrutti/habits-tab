@@ -21,7 +21,7 @@ const theme = createMuiTheme({
     MuiCssBaseline: {
       "@global": {
         body: {
-          backgroundImage: 'linear-gradient(90deg, #020080 0%, #090979 35%, #00D4A1 100%)'
+          backgroundImage: 'linear-gradient(90deg, #020080 0%, #257fc5 50%, #00d4a1 100%)'
         }
       }
     }

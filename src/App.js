@@ -5,13 +5,15 @@ import Box from '@material-ui/core/Box';
 import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
 import IconButton from '@material-ui/core/IconButton';
 import HabitCard from './components/HabitCard';
-import FormDialog from './components/FormDialog';
+import AddCardDialog from './components/AddCardDialog';
 import useInterval from './hooks/useInterval';
 import getCurrentMiliseconds from './utils/miliseconds'
+import ConfirmDeleteDialog from './components/ConfirmDeleteDialog';
 
 export default function App() {
   const [cards, setCards] = useState([]);
-  const [open, setOpen] = useState(false);
+  const [addCardOpen, setAddCardOpen] = useState(false);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState(getCurrentMiliseconds());
 
   useInterval(() => {
@@ -39,6 +41,10 @@ export default function App() {
     chrome.storage.sync.set({ cards });
   }
 
+  const handleConfirm = (answer) => {
+    
+  }
+
   useEffect(() => {
     chrome.storage.sync.get(['cards'], (data) => {
       if (data.cards) setCards(data.cards);
@@ -64,12 +70,14 @@ export default function App() {
       </Box>
 
       <Box display="flex" flexWrap="wrap" justifyContent="center" alignItems="center">
-        <IconButton aria-label="add-habit" onClick={() => setOpen(true)}>
+        <IconButton aria-label="add-habit" onClick={() => setAddCardOpen(true)}>
           <AddCircleOutlineRoundedIcon fontSize="large" />
         </IconButton>
       </Box>
 
-      <FormDialog open={open} handleClose={() => setOpen(false)} handleAddCard={handleAddCard}></FormDialog>
+      <AddCardDialog open={addCardOpen} handleClose={() => setAddCardOpen(false)} handleAddCard={handleAddCard}></AddCardDialog>
+
+      <ConfirmDeleteDialog open={confirmDialogOpen} handleClose={handleConfirm}></ConfirmDeleteDialog>
     </Container>
   );
 }
