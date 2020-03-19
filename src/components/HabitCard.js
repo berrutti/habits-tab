@@ -15,8 +15,8 @@ const HabitCard = ({ name, timeframe, lastClicked, currentTime, handleDelete, ha
 
     percentage = ellapsedMilliseconds / upperbound;
     percentage = (percentage > 1) ? 1 : percentage;
-    const hue = 100 - 100 * percentage;
-    return `hsl(${hue}, 100%, 50%)`;
+    const hue = 150 * (1 - percentage);
+    return `hsl(${hue}, 50%, 50%)`;
   }
 
   const useStyles = makeStyles({
