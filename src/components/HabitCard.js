@@ -4,10 +4,19 @@ import Card from "@material-ui/core/Card";
 import { CardActionArea, CardContent, CardHeader, IconButton, makeStyles } from "@material-ui/core";
 import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
 
-const HabitCard = ({ name, lastClicked, currentTime, handleDelete, handleUpdate }) => {
+import { UPPERBOUNDS } from '../utils/constants';
+
+const HabitCard = ({ name, timeframe, lastClicked, currentTime, handleDelete, handleUpdate }) => {
   const getBackgroundColor = () => {
-    console.log(currentTime - lastClicked);
-    return 'white';
+    let ellapsedMilliseconds = currentTime - lastClicked;
+    ellapsedMilliseconds = (ellapsedMilliseconds < 0) ? 0 : ellapsedMilliseconds;
+    let percentage = 0;
+    let upperbound = UPPERBOUNDS[timeframe];
+
+    percentage = ellapsedMilliseconds / upperbound;
+    percentage = (percentage > 1) ? 1 : percentage;
+    const hue = 100 - 100 * percentage;
+    return `hsl(${hue}, 100%, 50%)`;
   }
 
   const useStyles = makeStyles({

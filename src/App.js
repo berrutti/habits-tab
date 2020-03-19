@@ -53,6 +53,7 @@ export default function App() {
             <HabitCard
               key={i}
               name={element.name}
+              timeframe={element.timeframe}
               lastClicked={element.lastClicked}
               currentTime={currentTime}
               handleDelete={handleDeleteCard}

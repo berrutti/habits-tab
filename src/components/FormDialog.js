@@ -15,10 +15,11 @@ import {
 } from '@material-ui/core';
 
 import getCurrentMiliseconds from '../utils/miliseconds';
+import { TIMEFRAMES } from '../utils/constants';
 
 const FormDialog = (props) => {
   const [name, setName] = useState('');
-  const [timeframe, setTimeframe] = useState('daily');
+  const [timeframe, setTimeframe] = useState(TIMEFRAMES.Daily);
 
   const handleTimeframeChange = (event) => {
     setTimeframe(event.target.value);
@@ -31,9 +32,9 @@ const FormDialog = (props) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    props.handleAddCard({ name: name, timeframe: timeframe, lastClicked: getCurrentMiliseconds() });
+    props.handleAddCard({ name, timeframe, lastClicked: getCurrentMiliseconds() });
     setName('');
-    setTimeframe('daily');
+    setTimeframe(TIMEFRAMES.Daily);
   }
 
   return (
@@ -65,9 +66,9 @@ const FormDialog = (props) => {
                 fullWidth
                 onChange={handleTimeframeChange}
               >
-                <MenuItem value='daily'>Daily</MenuItem>
-                <MenuItem value='weekly'>Weekly</MenuItem>
-                <MenuItem value='monthly'>Monthly</MenuItem>
+                <MenuItem value={TIMEFRAMES.Daily}>Daily</MenuItem>
+                <MenuItem value={TIMEFRAMES.Weekly}>Weekly</MenuItem>
+                <MenuItem value={TIMEFRAMES.Monthly}>Monthly</MenuItem>
               </Select>
             </FormControl>
           </DialogContent>
