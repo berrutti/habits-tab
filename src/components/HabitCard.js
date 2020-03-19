@@ -4,32 +4,34 @@ import Card from "@material-ui/core/Card";
 import { CardActionArea, CardContent, CardHeader, IconButton, makeStyles } from "@material-ui/core";
 import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
 
-const HabitCard = props => {
+const HabitCard = ({ name, lastClicked, currentTime, handleDelete, handleUpdate }) => {
+  const getBackgroundColor = () => {
+    console.log(currentTime - lastClicked);
+    return 'white';
+  }
+
   const useStyles = makeStyles({
     card: {
       minWidth: 275,
-      margin: '1rem'
+      margin: '1rem',
+      backgroundColor: getBackgroundColor()
     }
   });
 
   const classes = useStyles();
 
-  const handleCardClick = () => {
-    console.log('Card click!', props.name)
-  }
-
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} >
       <CardHeader
-        title={props.name}
+        title={name}
         action={
-          <IconButton onClick={props.handleDelete.bind(this, props.name)} aria-label="settings">
+          <IconButton onClick={handleDelete.bind(this, name)} aria-label="settings">
             <CloseRoundedIcon />
           </IconButton>
         } />
-      <CardActionArea onClick={handleCardClick}>
+      <CardActionArea onClick={handleUpdate.bind(this, name)}>
         <CardContent>
-          Updated on {new Date(props.lastClicked).toLocaleDateString()}
+          Updated on {new Date(lastClicked).getTime()}
         </CardContent>
       </CardActionArea>
     </Card>
@@ -37,3 +39,5 @@ const HabitCard = props => {
 }
 
 export default HabitCard;
+
+// Updated on {new Date(lastClicked).toLocaleDateString()}

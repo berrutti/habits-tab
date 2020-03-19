@@ -6,13 +6,33 @@ import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRoun
 import IconButton from '@material-ui/core/IconButton';
 import HabitCard from './components/HabitCard';
 import FormDialog from './components/FormDialog';
+import useInterval from './hooks/useInterval';
 
 export default function App() {
   const [cards, setCards] = useState([]);
 
   const [open, setOpen] = useState(false);
 
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useInterval(() => {
+    const now = new Date().getTime();
+    console.log('Nos is now',now);
+    setCurrentTime(now);
+  }, 5000);
+
+  useEffect(() => {
+    console.log('Use event listener')
+    chrome.storage.onChanged.addListener((changes, namespace) => {
+      console.log('added new cards', changes)
+      console.log('added new namespace', namespace)
+      //setCards(changes['cards'].newValue)
+    });
+  }, []);
+  
+
   const handleAddCard = card => {
+    console.log('Add card')
     setCards(previousCards => {
       const cards = [...previousCards, card];
       chrome.storage.sync.set({ cards }, () => { });
@@ -21,6 +41,7 @@ export default function App() {
   }
 
   const handleDeleteCard = name => {
+    console.log('Delete card')
     setCards(previousCards => {
       const cards = previousCards.filter(card => card.name !== name);
       chrome.storage.sync.set({ cards }, () => { });
@@ -28,7 +49,18 @@ export default function App() {
     });
   }
 
+  const handleUpdateCard = name => {
+    setCards(previousCards => {
+      const card = previousCards.find(card => card.name === name);
+      card.lastClicked = new Date().getTime();
+      console.log('Updated card',name, card.lastClicked)
+      chrome.storage.sync.set({ cards }, () => { });
+      return cards;
+    });
+  }
+
   useEffect(() => {
+    console.log('Use effect get cards')
     chrome.storage.sync.get(['cards'], (data) => {
       if (data.cards) {
         setCards(data.cards);
@@ -40,7 +72,16 @@ export default function App() {
     <Container>
       <Box display="flex" flexWrap="wrap" justifyContent="center" alignItems="center">
         {cards.map((element, i) => {
-          return (<HabitCard key={i} name={element.name} lastClicked={element.lastClicked} handleDelete={handleDeleteCard} />);
+          return (
+            <HabitCard
+              key={i}
+              name={element.name}
+              lastClicked={element.lastClicked}
+              currentTime={currentTime}
+              handleDelete={handleDeleteCard}
+              handleUpdate={handleUpdateCard}
+            />
+          );
         })}
       </Box>
 
@@ -49,7 +90,6 @@ export default function App() {
           <AddCircleOutlineRoundedIcon fontSize="large" />
         </IconButton>
       </Box>
-
 
       <FormDialog open={open} handleClose={() => setOpen(false)} handleAddCard={handleAddCard}></FormDialog>
     </Container>
