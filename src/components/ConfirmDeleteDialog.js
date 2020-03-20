@@ -1,21 +1,21 @@
 import React from 'react';
 
 import {
+  Button,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
 } from '@material-ui/core';
 
 
-ConfirmationDialogRaw = (props) => {
-  const { onClose: handleClose, open  } = props;
-
+const ConfirmDeleteDialog = ({ open, handleClose, handleConfirm }) => {
   return (
     <Dialog
+      onClose={handleClose}
       disableBackdropClick
       disableEscapeKeyDown
       maxWidth="xs"
-      onEntering={handleEntering}
       aria-labelledby="confirmation-dialog-title"
       open={open}
     >
@@ -24,10 +24,10 @@ ConfirmationDialogRaw = (props) => {
         This action is cannot be undone
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleClose(false)} color="primary">
+        <Button autoFocus onClick={handleClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={handleClose(true)} color="primary">
+        <Button onClick={handleConfirm} color="primary">
           Ok
         </Button>
       </DialogActions>

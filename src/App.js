@@ -14,6 +14,7 @@ export default function App() {
   const [cards, setCards] = useState([]);
   const [addCardOpen, setAddCardOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [cardToDelete, setCardToDelete] = useState('');
   const [currentTime, setCurrentTime] = useState(getCurrentMiliseconds());
 
   useInterval(() => {
@@ -26,13 +27,27 @@ export default function App() {
     });
   }, []);
 
+  useEffect(() => {
+    chrome.storage.sync.get(['cards'], (data) => {
+      if (data.cards) setCards(data.cards);
+    })
+  }, []);
+
 
   const handleAddCard = card => {
     chrome.storage.sync.set({ cards: [...cards, card] });
   }
 
   const handleDeleteCard = name => {
-    chrome.storage.sync.set({ cards: cards.filter(card => card.name !== name) });
+    setCardToDelete(name);
+    setConfirmDialogOpen(true);
+  }
+
+  const deleteCard = () => {
+    setConfirmDialogOpen(false);
+    chrome.storage.sync.set({ cards: cards.filter(card => card.name !== cardToDelete) }, () => {
+      setCardToDelete('');
+    });
   }
 
   const handleUpdateCard = name => {
@@ -40,16 +55,6 @@ export default function App() {
     cardToUpdate.lastClicked = getCurrentMiliseconds();
     chrome.storage.sync.set({ cards });
   }
-
-  const handleConfirm = (answer) => {
-    
-  }
-
-  useEffect(() => {
-    chrome.storage.sync.get(['cards'], (data) => {
-      if (data.cards) setCards(data.cards);
-    })
-  }, []);
 
   return (
     <Container>
@@ -75,9 +80,19 @@ export default function App() {
         </IconButton>
       </Box>
 
-      <AddCardDialog open={addCardOpen} handleClose={() => setAddCardOpen(false)} handleAddCard={handleAddCard}></AddCardDialog>
+      <AddCardDialog
+        open={addCardOpen}
+        handleClose={() => setAddCardOpen(false)}
+        handleAddCard={handleAddCard}>
+      </AddCardDialog>
 
-      <ConfirmDeleteDialog open={confirmDialogOpen} handleClose={handleConfirm}></ConfirmDeleteDialog>
+      <ConfirmDeleteDialog
+        open={confirmDialogOpen}
+        handleConfirm={deleteCard}
+        handleClose={() => setConfirmDialogOpen(false)}
+      >
+
+      </ConfirmDeleteDialog>
     </Container>
   );
 }
