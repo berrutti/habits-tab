@@ -14,7 +14,7 @@ import {
   TextField
 } from '@material-ui/core';
 
-import getCurrentMiliseconds from '../utils/miliseconds';
+import { getCurrentMiliseconds } from '../utils/functions';
 import { TIMEFRAMES } from '../utils/constants';
 
 const AddCardDialog = ({ open, handleClose, handleAddCard }) => {
@@ -39,29 +39,29 @@ const AddCardDialog = ({ open, handleClose, handleAddCard }) => {
 
   return (
     <div>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={open} onClose={handleClose} aria-labelledby='form-dialog-title'>
         <form onSubmit={handleSubmit}>
-          <DialogTitle id="form-dialog-title">Add a New Habit</DialogTitle>
+          <DialogTitle id='form-dialog-title'>Add a New Habit</DialogTitle>
           <DialogContent>
             <DialogContentText>
               To add a new Habit, please add a Name and select a Timeframe.
             </DialogContentText>
             <TextField
               autoFocus
-              autoComplete="off"
-              margin="dense"
-              id="name"
-              label="Name"
-              type="text"
+              autoComplete='off'
+              margin='dense'
+              id='name'
+              label='Name'
+              type='text'
               fullWidth
               value={name}
               onChange={handleNameChange}
             />
             <FormControl fullWidth>
-              <InputLabel id="timeframe-label">Timeframe</InputLabel>
+              <InputLabel id='timeframe-label'>Timeframe</InputLabel>
               <Select
-                labelId="timeframe-label"
-                id="timeframe"
+                labelId='timeframe-label'
+                id='timeframe'
                 value={timeframe}
                 onChange={handleTimeframeChange}>
                 <MenuItem value={TIMEFRAMES.Daily}>Daily</MenuItem>
@@ -71,10 +71,10 @@ const AddCardDialog = ({ open, handleClose, handleAddCard }) => {
             </FormControl>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="primary">
+            <Button onClick={handleClose} color='primary'>
               Cancel
           </Button>
-            <Button onClick={handleClose} type="submit" color="primary">
+            <Button onClick={handleClose} type='submit' color='primary'>
               Add
           </Button>
           </DialogActions>

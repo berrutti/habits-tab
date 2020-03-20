@@ -1,27 +1,27 @@
-import { red } from '@material-ui/core/colors';
 import { createMuiTheme } from '@material-ui/core/styles';
 
 // A custom theme for this app
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#556cd6',
+      main: 'rgba(46,149,227,1)',
     },
     secondary: {
       main: '#19857b',
     },
     error: {
-      main: red.A400,
-    },
-    background: {
-      default: '#f8f9fa',
-    },
+      main: '#f66'
+    }
   },
   overrides: {
     MuiCssBaseline: {
-      "@global": {
+      '@global': {
+        html: {
+          height: '100%'
+        },
         body: {
-          backgroundImage: 'linear-gradient(90deg, #020080 0%, #257fc5 50%, #00d4a1 100%)'
+          backgroundImage: 'linear-gradient(0deg, rgba(46,120,227,1) 50%, rgba(46,149,227,1) 100%)',
+          minHeight: '100%'
         }
       }
     }

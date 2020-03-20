@@ -1,14 +1,12 @@
 /* global chrome */ // This is needed so ESLint wont cry about it
 import React, { useState, useEffect } from 'react';
-import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
-import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
-import IconButton from '@material-ui/core/IconButton';
+import { Container, Box, IconButton } from '@material-ui/core';
+import { AddCircleOutlineRounded } from '@material-ui/icons';
+import { getCurrentMiliseconds } from './utils/functions'
 import HabitCard from './components/HabitCard';
 import AddCardDialog from './components/AddCardDialog';
-import useInterval from './hooks/useInterval';
-import getCurrentMiliseconds from './utils/miliseconds'
 import ConfirmDeleteDialog from './components/ConfirmDeleteDialog';
+import useInterval from './hooks/useInterval';
 
 export default function App() {
   const [cards, setCards] = useState([]);
@@ -58,7 +56,7 @@ export default function App() {
 
   return (
     <Container>
-      <Box display="flex" flexWrap="wrap" justifyContent="center" alignItems="center">
+      <Box display='flex' flexWrap='wrap' justifyContent='center' alignItems='center'>
         {cards.map((element, i) => {
           return (
             <HabitCard
@@ -74,9 +72,9 @@ export default function App() {
         })}
       </Box>
 
-      <Box display="flex" flexWrap="wrap" justifyContent="center" alignItems="center">
-        <IconButton aria-label="add-habit" onClick={() => setAddCardOpen(true)}>
-          <AddCircleOutlineRoundedIcon fontSize="large" />
+      <Box display='flex' flexWrap='wrap' justifyContent='center' alignItems='center' color='white'>
+        <IconButton aria-label='add-habit' onClick={() => setAddCardOpen(true)}>
+          <AddCircleOutlineRounded fontSize='large' />
         </IconButton>
       </Box>
 

@@ -15,19 +15,19 @@ const ConfirmDeleteDialog = ({ open, handleClose, handleConfirm }) => {
       onClose={handleClose}
       disableBackdropClick
       disableEscapeKeyDown
-      maxWidth="xs"
-      aria-labelledby="confirmation-dialog-title"
+      maxWidth='xs'
+      aria-labelledby='confirmation-dialog-title'
       open={open}
     >
-      <DialogTitle id="confirmation-dialog-title">Are you sure you want to delete?</DialogTitle>
+      <DialogTitle id='confirmation-dialog-title'>Are you sure you want to delete?</DialogTitle>
       <DialogContent dividers>
         This action is cannot be undone
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleClose} color="primary">
+        <Button autoFocus onClick={handleClose} color='primary'>
           Cancel
         </Button>
-        <Button onClick={handleConfirm} color="primary">
+        <Button onClick={handleConfirm} color='primary'>
           Ok
         </Button>
       </DialogActions>
