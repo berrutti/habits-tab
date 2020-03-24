@@ -54,6 +54,16 @@ export default function App() {
     chrome.storage.sync.set({ cards });
   }
 
+  const isFormValid = name => {
+    let isUnique = true;
+    cards.forEach(card => {
+      if (card.name === name) {
+        isUnique = false;
+      }
+    })
+    return isUnique;
+  }
+
   return (
     <Container>
       <Box display='flex' flexWrap='wrap' justifyContent='center' alignItems='center'>
@@ -62,7 +72,7 @@ export default function App() {
             <HabitCard
               key={i}
               name={element.name}
-              timeframe={element.timeframe}
+              timeframe={parseInt(element.timeframe)}
               lastClicked={element.lastClicked}
               currentTime={currentTime}
               handleDelete={handleDeleteCard}
@@ -80,6 +90,7 @@ export default function App() {
 
       <AddCardDialog
         open={addCardOpen}
+        validate={isFormValid}
         handleClose={() => setAddCardOpen(false)}
         handleAddCard={handleAddCard}>
       </AddCardDialog>

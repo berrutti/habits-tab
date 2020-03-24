@@ -32,15 +32,31 @@ const AddCardDialog = ({ open, handleClose, handleAddCard }) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    handleAddCard({ name, timeframe, lastClicked: getCurrentMiliseconds() });
-    setName('');
-    setTimeframe(TIMEFRAMES.Daily);
+
+    if (!event.target.errors) {
+      handleClose();
+      handleAddCard({ name, timeframe, lastClicked: getCurrentMiliseconds() });
+      setName('');
+      setTimeframe(TIMEFRAMES.Daily);
+    }
+
+  }
+
+  const validate = values => {
+    const errors = {}
+    if (!values.name) {
+      errors.name = 'Habit name is Required'
+    }
+    return errors;
   }
 
   return (
     <div>
       <Dialog open={open} onClose={handleClose} aria-labelledby='form-dialog-title'>
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={handleSubmit}
+          validate={validate}
+        >
           <DialogTitle id='form-dialog-title'>Add a New Habit</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -48,6 +64,7 @@ const AddCardDialog = ({ open, handleClose, handleAddCard }) => {
             </DialogContentText>
             <TextField
               autoFocus
+              required
               autoComplete='off'
               margin='dense'
               id='name'
@@ -65,7 +82,14 @@ const AddCardDialog = ({ open, handleClose, handleAddCard }) => {
                 value={timeframe}
                 onChange={handleTimeframeChange}>
                 <MenuItem value={TIMEFRAMES.Daily}>Daily</MenuItem>
+                <MenuItem value={TIMEFRAMES.Every_two}>Every two days</MenuItem>
+                <MenuItem value={TIMEFRAMES.Every_three}>Every three days</MenuItem>
+                <MenuItem value={TIMEFRAMES.Every_four}>Every four days</MenuItem>
+                <MenuItem value={TIMEFRAMES.Every_five}>Every five days</MenuItem>
+                <MenuItem value={TIMEFRAMES.Every_six}>Every six days</MenuItem>
                 <MenuItem value={TIMEFRAMES.Weekly}>Weekly</MenuItem>
+                <MenuItem value={TIMEFRAMES.Biweekly}>Bi-weekly</MenuItem>
+                <MenuItem value={TIMEFRAMES.Threeweekly}>Three-weekly</MenuItem>
                 <MenuItem value={TIMEFRAMES.Monthly}>Monthly</MenuItem>
               </Select>
             </FormControl>
@@ -74,7 +98,7 @@ const AddCardDialog = ({ open, handleClose, handleAddCard }) => {
             <Button onClick={handleClose} color='primary'>
               Cancel
           </Button>
-            <Button onClick={handleClose} type='submit' color='primary'>
+            <Button type='submit' color='primary'>
               Add
           </Button>
           </DialogActions>
