@@ -1,15 +1,17 @@
 /* global chrome */ // This is needed so ESLint wont cry about it
 import React, { useState, useEffect } from 'react';
-import { Container, Box, IconButton } from '@material-ui/core';
-import { AddCircleOutlineRounded } from '@material-ui/icons';
+import { Container, Box, Fab } from '@material-ui/core';
+import { Add, Help } from '@material-ui/icons';
 import { getCurrentMiliseconds } from './utils/functions'
 import HabitCard from './components/HabitCard';
 import AddCardDialog from './components/AddCardDialog';
 import ConfirmDeleteDialog from './components/ConfirmDeleteDialog';
+import HelpDialog from './components/HelpDialog';
 import useInterval from './hooks/useInterval';
 
 export default function App() {
   const [cards, setCards] = useState([]);
+  const [showHelp, setShowHelp] = useState(false);
   const [addCardOpen, setAddCardOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [cardToDelete, setCardToDelete] = useState('');
@@ -54,16 +56,6 @@ export default function App() {
     chrome.storage.sync.set({ cards });
   }
 
-  const isFormValid = name => {
-    let isUnique = true;
-    cards.forEach(card => {
-      if (card.name === name) {
-        isUnique = false;
-      }
-    })
-    return isUnique;
-  }
-
   return (
     <Container>
       <Box display='flex' flexWrap='wrap' justifyContent='center' alignItems='center'>
@@ -82,18 +74,27 @@ export default function App() {
         })}
       </Box>
 
-      <Box display='flex' flexWrap='wrap' justifyContent='center' alignItems='center' color='white'>
-        <IconButton aria-label='add-habit' onClick={() => setAddCardOpen(true)}>
-          <AddCircleOutlineRounded fontSize='large' />
-        </IconButton>
-      </Box>
+      <Fab color="secondary" aria-label='add-habit' onClick={() => setAddCardOpen(true)} aria-label="add-habit">
+        <Add />
+      </Fab>
+      <Fab color="secondary" aria-label='help' onClick={() => setShowHelp(true)} aria-label="add-habit">
+        <Help />
+      </Fab>
+
+
+      <HelpDialog
+        open={showHelp}
+        handleClose={() => setShowHelp(false)}>
+      </HelpDialog>
+
 
       <AddCardDialog
         open={addCardOpen}
-        validate={isFormValid}
         handleClose={() => setAddCardOpen(false)}
         handleAddCard={handleAddCard}>
       </AddCardDialog>
+
+      
 
       <ConfirmDeleteDialog
         open={confirmDialogOpen}

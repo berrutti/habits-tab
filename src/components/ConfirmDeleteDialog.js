@@ -19,7 +19,7 @@ const ConfirmDeleteDialog = ({ open, handleClose, handleConfirm }) => {
       aria-labelledby='confirmation-dialog-title'
       open={open}
     >
-      <DialogTitle id='confirmation-dialog-title'>Are you sure you want to delete?</DialogTitle>
+      <DialogTitle id='confirmation-dialog-title'>Are you sure you want to delete this Habit?</DialogTitle>
       <DialogContent dividers>
         This action is cannot be undone
       </DialogContent>

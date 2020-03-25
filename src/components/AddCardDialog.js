@@ -42,13 +42,7 @@ const AddCardDialog = ({ open, handleClose, handleAddCard }) => {
 
   }
 
-  const validate = values => {
-    const errors = {}
-    if (!values.name) {
-      errors.name = 'Habit name is Required'
-    }
-    return errors;
-  }
+  const validate = values => !values.name ? { name: true } : null;
 
   return (
     <div>
