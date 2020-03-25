@@ -11,11 +11,9 @@ const HabitCard = ({ name, timeframe, lastClicked, currentTime, handleDelete, ha
     ellapsedMilliseconds = (ellapsedMilliseconds < 0) ? 0 : ellapsedMilliseconds;
     let percentage = 0;
     const upperbound = getUpperbound(timeframe);
-    console.log('upperbound',upperbound);
     percentage = ellapsedMilliseconds / upperbound;
     
     percentage = (percentage > 1) ? 1 : percentage;
-    console.log(percentage);
     const hue = 150 * (1 - percentage);
     return `hsl(${hue}, 50%, 50%)`;
   }
@@ -31,7 +29,6 @@ const HabitCard = ({ name, timeframe, lastClicked, currentTime, handleDelete, ha
       padding: '20px'
     }
   });
-
   const classes = useStyles();
 
   return (
