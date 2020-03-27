@@ -11,6 +11,9 @@ import { Card } from './utils/types';
 
 export default function App() {
   const useStyles = makeStyles(() => ({
+    emptyHeader: {
+      color: 'white'
+    },
     addIcon: {
       position: 'fixed',
       right: '12px',
@@ -76,7 +79,7 @@ export default function App() {
       <Container>
 
         <Box display='flex' flexWrap='wrap' justifyContent='center' alignItems='center'>
-          {cards.map((element, i) => {
+          {cards.length ? cards.map((element, i) => {
             return (
               <HabitCard
                 key={i}
@@ -86,7 +89,7 @@ export default function App() {
                 handleUpdate={handleUpdateCard}
               />
             );
-          })}
+          }) : <h1 className={classes.emptyHeader}>Add a New Habit by clicking the + button</h1>}
         </Box>
 
         <HelpDialog
