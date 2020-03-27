@@ -4,26 +4,25 @@ import { Card, CardActionArea, CardContent, CardHeader, IconButton, makeStyles }
 import { CloseRounded } from '@material-ui/icons';
 
 import { getDateString, getUpperbound } from '../utils/functions';
+import { Card as CardType } from '../utils/types';
 
 type HabitCardProps = {
-  name: string;
-  timeframe: number;
-  lastClicked: number;
+  card: CardType;
   currentTime: number;
   handleDelete: (name: string) => void;
   handleUpdate: (name: string) => void;
 }
 
-const HabitCard: FunctionComponent<HabitCardProps> = ({ name, timeframe, lastClicked, currentTime, handleDelete, handleUpdate }: HabitCardProps) => {
+const HabitCard: FunctionComponent<HabitCardProps> = ({ card, currentTime, handleDelete, handleUpdate }: HabitCardProps) => {
   const getCardColor = (): string => {
-    let ellapsedMilliseconds = currentTime - lastClicked;
+    let ellapsedMilliseconds = currentTime - card.lastClicked;
     ellapsedMilliseconds = (ellapsedMilliseconds < 0) ? 0 : ellapsedMilliseconds;
     let percentage = 0;
-    const upperbound = getUpperbound(timeframe);
+    const upperbound = getUpperbound(card.timeframe);
     percentage = ellapsedMilliseconds / upperbound;
 
     percentage = (percentage > 1) ? 1 : percentage;
-    const hue = 150 * (1 - percentage);
+    const hue = card.isRegular ? 150 * (1 - percentage) : 150 * percentage;
     return `hsl(${hue}, 50%, 50%)`;
   }
 
@@ -43,15 +42,15 @@ const HabitCard: FunctionComponent<HabitCardProps> = ({ name, timeframe, lastCli
   return (
     <Card className={classes.card} >
       <CardHeader
-        title={name}
+        title={card.name}
         action={
-          <IconButton onClick={() => handleDelete(name)} aria-label='settings'>
+          <IconButton onClick={() => handleDelete(card.name)} aria-label='settings'>
             <CloseRounded />
           </IconButton>
         } />
-      <CardActionArea onClick={() => handleUpdate(name)}>
+      <CardActionArea onClick={() => handleUpdate(card.name)}>
         <CardContent className={classes.cardContent}>
-          <h3>Last update on {getDateString(lastClicked)}</h3>
+          <h3>Last update on {getDateString(card.lastClicked)}</h3>
         </CardContent>
       </CardActionArea>
     </Card>

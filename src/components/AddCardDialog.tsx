@@ -8,9 +8,11 @@ import {
   DialogContentText,
   DialogTitle,
   FormControl,
+  FormControlLabel,
   InputLabel,
   MenuItem,
   Select,
+  Switch,
   TextField
 } from '@material-ui/core';
 
@@ -32,8 +34,8 @@ const AddCardDialog: FunctionComponent<AddCardDialogProps> = ({ open, handleClos
     name?: string | undefined;
     value: unknown;
   }>): void => {
+    event.preventDefault();
     setTimeframe(event.target.value as number);
-    setIsRegular(true);
   };
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -41,16 +43,20 @@ const AddCardDialog: FunctionComponent<AddCardDialogProps> = ({ open, handleClos
     setName(event.target.value);
   };
 
+  const handleSwitchChange = (event: any): void => {
+    event.preventDefault();
+    setIsRegular(event.target.checked)
+  }
+
   const handleSubmit = (event: ChangeEvent<HTMLFormElement>): void => {
     event.preventDefault();
-
     if (!event.target.errors) {
       handleClose();
       handleAddCard({ name, timeframe, lastClicked: getCurrentMiliseconds(), isRegular });
       setName('');
+      setIsRegular(true);
       setTimeframe(Timeframe.Daily);
     }
-
   }
 
   return (
@@ -64,6 +70,7 @@ const AddCardDialog: FunctionComponent<AddCardDialogProps> = ({ open, handleClos
               To add a new Habit, please add a Name and select a Timeframe.
             </DialogContentText>
             <TextField
+              fullWidth
               autoFocus
               required
               autoComplete='off'
@@ -71,10 +78,18 @@ const AddCardDialog: FunctionComponent<AddCardDialogProps> = ({ open, handleClos
               id='name'
               label='Name'
               type='text'
-              fullWidth
               value={name}
-              onChange={handleNameChange}
-            />
+              onChange={handleNameChange} />
+
+            <FormControlLabel
+              control={<Switch
+                checked={isRegular}
+                onChange={handleSwitchChange}
+                name="regular"
+                color="primary"
+              />}
+              labelPlacement="top"
+              label="Regular" />
             <FormControl fullWidth>
               <InputLabel id='timeframe-label'>Timeframe</InputLabel>
               <Select

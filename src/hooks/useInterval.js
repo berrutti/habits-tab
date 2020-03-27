@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-/* istanbul ignore next */
+
 export default function useInterval(callback, delay) {
   const savedCallback = useRef();
 

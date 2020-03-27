@@ -51,7 +51,7 @@ export default function App() {
     chrome.storage.sync.set({ cards: [...cards, card] });
   }
 
-  function handleDeleteCard(name: string): void {
+  const handleDeleteCard = (name: string): void => {
     setCardToDelete(name);
     setConfirmDialogOpen(true);
   }
@@ -80,9 +80,7 @@ export default function App() {
             return (
               <HabitCard
                 key={i}
-                name={element.name}
-                timeframe={element.timeframe}
-                lastClicked={element.lastClicked}
+                card={element}
                 currentTime={currentTime}
                 handleDelete={handleDeleteCard}
                 handleUpdate={handleUpdateCard}
