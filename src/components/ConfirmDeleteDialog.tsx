@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
 import {
   Button,
@@ -8,8 +8,13 @@ import {
   DialogTitle,
 } from '@material-ui/core';
 
+type ConfirmDeleteDialogProps = {
+  open: boolean;
+  handleClose: (() => void);
+  handleConfirm: (() => void);
+}
 
-const ConfirmDeleteDialog = ({ open, handleClose, handleConfirm }) => {
+const ConfirmDeleteDialog: FunctionComponent<ConfirmDeleteDialogProps> = ({ open, handleClose, handleConfirm }: ConfirmDeleteDialogProps) => {
   return (
     <Dialog
       onClose={handleClose}

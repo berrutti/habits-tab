@@ -1,25 +1,24 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
-// A custom theme for this app
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#4062BB',
-    }
+      main: '#4062bb',
+    },
   },
   overrides: {
     MuiCssBaseline: {
       '@global': {
         html: {
-          height: '100%'
+          height: '100%',
         },
         body: {
           backgroundImage: 'linear-gradient(0deg, rgba(46,120,227,1) 50%, rgba(46,149,227,1) 100%)',
-          minHeight: '100%'
-        }
-      }
-    }
-  }
+          minHeight: '100%',
+        },
+      },
+    },
+  },
 });
 
 export default theme;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FunctionComponent, ChangeEvent } from 'react';
 
 import {
   Button,
@@ -15,42 +15,49 @@ import {
 } from '@material-ui/core';
 
 import { getCurrentMiliseconds } from '../utils/functions';
-import { TIMEFRAMES } from '../utils/constants';
+import { Timeframe, Card } from '../utils/types';
 
-const AddCardDialog = ({ open, handleClose, handleAddCard }) => {
+type AddCardDialogProps = {
+  open: boolean;
+  handleClose: (() => void);
+  handleAddCard: ((card: Card) => void);
+}
+
+const AddCardDialog: FunctionComponent<AddCardDialogProps> = ({ open, handleClose, handleAddCard }: AddCardDialogProps) => {
   const [name, setName] = useState('');
-  const [timeframe, setTimeframe] = useState(TIMEFRAMES.Daily);
+  const [isRegular, setIsRegular] = useState(true);
+  const [timeframe, setTimeframe] = useState(Timeframe.Daily);
 
-  const handleTimeframeChange = (event) => {
-    setTimeframe(event.target.value);
-  }
+  const handleTimeframeChange = (event: ChangeEvent<{
+    name?: string | undefined;
+    value: unknown;
+  }>): void => {
+    setTimeframe(event.target.value as number);
+    setIsRegular(true);
+  };
 
-  const handleNameChange = (event) => {
+  const handleNameChange = (event: ChangeEvent<HTMLInputElement>): void => {
     event.preventDefault();
     setName(event.target.value);
-  }
+  };
 
-  const handleSubmit = event => {
+  const handleSubmit = (event: ChangeEvent<HTMLFormElement>): void => {
     event.preventDefault();
 
     if (!event.target.errors) {
       handleClose();
-      handleAddCard({ name, timeframe, lastClicked: getCurrentMiliseconds() });
+      handleAddCard({ name, timeframe, lastClicked: getCurrentMiliseconds(), isRegular });
       setName('');
-      setTimeframe(TIMEFRAMES.Daily);
+      setTimeframe(Timeframe.Daily);
     }
 
   }
-
-  const validate = values => !values.name ? { name: true } : null;
 
   return (
     <div>
       <Dialog open={open} onClose={handleClose} aria-labelledby='form-dialog-title'>
         <form
-          onSubmit={handleSubmit}
-          validate={validate}
-        >
+          onSubmit={handleSubmit}>
           <DialogTitle id='form-dialog-title'>Add a New Habit</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -75,16 +82,16 @@ const AddCardDialog = ({ open, handleClose, handleAddCard }) => {
                 id='timeframe'
                 value={timeframe}
                 onChange={handleTimeframeChange}>
-                <MenuItem value={TIMEFRAMES.Daily}>Daily</MenuItem>
-                <MenuItem value={TIMEFRAMES.Every_two}>Every two days</MenuItem>
-                <MenuItem value={TIMEFRAMES.Every_three}>Every three days</MenuItem>
-                <MenuItem value={TIMEFRAMES.Every_four}>Every four days</MenuItem>
-                <MenuItem value={TIMEFRAMES.Every_five}>Every five days</MenuItem>
-                <MenuItem value={TIMEFRAMES.Every_six}>Every six days</MenuItem>
-                <MenuItem value={TIMEFRAMES.Weekly}>Weekly</MenuItem>
-                <MenuItem value={TIMEFRAMES.Biweekly}>Bi-weekly</MenuItem>
-                <MenuItem value={TIMEFRAMES.Threeweekly}>Three-weekly</MenuItem>
-                <MenuItem value={TIMEFRAMES.Monthly}>Monthly</MenuItem>
+                <MenuItem value={Timeframe.Daily}>Daily</MenuItem>
+                <MenuItem value={Timeframe.EveryTwo}>Every two days</MenuItem>
+                <MenuItem value={Timeframe.EveryThree}>Every three days</MenuItem>
+                <MenuItem value={Timeframe.EveryFour}>Every four days</MenuItem>
+                <MenuItem value={Timeframe.EveryFive}>Every five days</MenuItem>
+                <MenuItem value={Timeframe.EverySix}>Every six days</MenuItem>
+                <MenuItem value={Timeframe.Weekly}>Weekly</MenuItem>
+                <MenuItem value={Timeframe.Biweekly}>Bi-weekly</MenuItem>
+                <MenuItem value={Timeframe.Threeweekly}>Three-weekly</MenuItem>
+                <MenuItem value={Timeframe.Monthly}>Monthly</MenuItem>
               </Select>
             </FormControl>
           </DialogContent>
