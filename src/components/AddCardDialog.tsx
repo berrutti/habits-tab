@@ -82,14 +82,14 @@ const AddCardDialog: FunctionComponent<AddCardDialogProps> = ({ open, handleClos
               onChange={handleNameChange} />
 
             <FormControlLabel
+              label="Regular"
               control={<Switch
                 checked={isRegular}
                 onChange={handleSwitchChange}
                 name="regular"
                 color="primary"
-              />}
-              labelPlacement="top"
-              label="Regular" />
+              />} />
+
             <FormControl fullWidth>
               <InputLabel id='timeframe-label'>Timeframe</InputLabel>
               <Select
