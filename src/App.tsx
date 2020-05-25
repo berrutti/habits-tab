@@ -28,6 +28,7 @@ export default function App() {
   const classes = useStyles();
 
   const [cards, setCards] = useState<Card[]>([]);
+  const [hidden, setHidden] = useState<boolean>(false);
   const [showSettings, setShowSettings] = useState(false);
   const [addCardOpen, setAddCardOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -40,14 +41,24 @@ export default function App() {
 
   useEffect(() => {
     chrome.storage.onChanged.addListener((changes) => {
-      setCards(changes['cards'].newValue);
+      if (changes['cards']) {
+        setCards(changes['cards'].newValue);
+      }
+      if (changes['hidden']) {
+        setHidden(changes['hidden'].newValue);
+      }
     });
   }, []);
 
   useEffect(() => {
-    chrome.storage.sync.get(['cards'], (data) => {
-      if (data.cards) setCards(data.cards);
-    })
+    chrome.storage.sync.get(['cards', 'hidden'], (data) => {
+      if (data.cards) {
+        setCards(data.cards);
+      }
+      if (data.hidden) {
+        setHidden(data.hidden);
+      }
+    });
   }, []);
 
   const handleAddCard = (card: Card): void => {
@@ -74,26 +85,35 @@ export default function App() {
     chrome.storage.sync.set({ cards });
   }
 
+  const handleSetHidden = (event: any): void => {
+    const hidden = event.target.checked;
+    chrome.storage.sync.set({ hidden });
+  }
+
   return (
     <Fragment>
       <Container>
 
-        <Box display='flex' flexWrap='wrap' justifyContent='center' alignItems='center'>
-          {cards.length ? cards.map((element, i) => {
-            return (
-              <HabitCard
-                key={i}
-                card={element}
-                currentTime={currentTime}
-                handleDelete={handleDeleteCard}
-                handleUpdate={handleUpdateCard}
-              />
-            );
-          }) : <h1 className={classes.emptyHeader}>Add a New Habit by clicking the + button</h1>}
-        </Box>
+        {!hidden && 
+          <Box display='flex' flexWrap='wrap' justifyContent='center' alignItems='center'>
+            {cards.length ? cards.map((element, i) => {
+              return (
+                <HabitCard
+                  key={i}
+                  card={element}
+                  currentTime={currentTime}
+                  handleDelete={handleDeleteCard}
+                  handleUpdate={handleUpdateCard}
+                />
+              );
+            }) : <h1 className={classes.emptyHeader}>Add a New Habit by clicking the + button</h1>}
+          </Box>
+        }
 
         <SettingsDialog
           open={showSettings}
+          hidden={hidden}
+          handleSetHidden={handleSetHidden}
           handleClose={(): void => setShowSettings(false)} />
 
         <AddCardDialog

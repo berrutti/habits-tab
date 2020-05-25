@@ -45,7 +45,7 @@ const AddCardDialog: FunctionComponent<AddCardDialogProps> = ({ open, handleClos
 
   const handleSwitchChange = (event: any): void => {
     event.preventDefault();
-    setIsRegular(event.target.checked)
+    setIsRegular(!event.target.checked)
   }
 
   const handleSubmit = (event: ChangeEvent<HTMLFormElement>): void => {
@@ -82,11 +82,11 @@ const AddCardDialog: FunctionComponent<AddCardDialogProps> = ({ open, handleClos
               onChange={handleNameChange} />
 
             <FormControlLabel
-              label="Regular"
+              label="Reverse"
               control={<Switch
-                checked={isRegular}
+                checked={!isRegular}
                 onChange={handleSwitchChange}
-                name="regular"
+                name="reverse"
                 color="primary"
               />} />
 
