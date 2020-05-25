@@ -1,11 +1,11 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Container, Box, Fab, makeStyles } from '@material-ui/core';
-import { AddCircle, Help } from '@material-ui/icons';
+import { AddCircle, Settings } from '@material-ui/icons';
 import { getCurrentMiliseconds } from './utils/functions'
 import HabitCard from './components/HabitCard';
 import AddCardDialog from './components/AddCardDialog';
 import ConfirmDeleteDialog from './components/ConfirmDeleteDialog';
-import HelpDialog from './components/HelpDialog';
+import SettingsDialog from './components/SettingsDialog';
 import useInterval from './hooks/useInterval';
 import { Card } from './utils/types';
 
@@ -19,7 +19,7 @@ export default function App() {
       right: '12px',
       bottom: '12px',
     },
-    helpIcon: {
+    settingsIcon: {
       position: 'fixed',
       right: '80px',
       bottom: '12px',
@@ -28,7 +28,7 @@ export default function App() {
   const classes = useStyles();
 
   const [cards, setCards] = useState<Card[]>([]);
-  const [showHelp, setShowHelp] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const [addCardOpen, setAddCardOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [cardToDelete, setCardToDelete] = useState('');
@@ -92,9 +92,9 @@ export default function App() {
           }) : <h1 className={classes.emptyHeader}>Add a New Habit by clicking the + button</h1>}
         </Box>
 
-        <HelpDialog
-          open={showHelp}
-          handleClose={(): void => setShowHelp(false)} />
+        <SettingsDialog
+          open={showSettings}
+          handleClose={(): void => setShowSettings(false)} />
 
         <AddCardDialog
           open={addCardOpen}
@@ -109,7 +109,7 @@ export default function App() {
       </Container>
 
       <Fab className={classes.addIcon} color="primary" onClick={(): void => setAddCardOpen(true)} aria-label="add-habit"><AddCircle /></Fab>
-      <Fab className={classes.helpIcon} color="primary" onClick={(): void => setShowHelp(true)} aria-label="show-help"><Help /></Fab>
+      <Fab className={classes.settingsIcon} color="primary" onClick={(): void => setShowSettings(true)} aria-label="show-settings"><Settings /></Fab>
 
     </Fragment>
   );

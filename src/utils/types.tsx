@@ -13,7 +13,7 @@ export enum Timeframe {
   EveryFive = 5,
   EverySix = 6,
   Weekly = 7,
-  Biweekly = 15,
+  Biweekly = 14,
   Threeweekly = 21,
   Monthly = 28,
 }

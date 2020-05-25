@@ -8,16 +8,18 @@ import {
 } from '@material-ui/core';
 
 
-type HelpDialogProps = {
+type SettingsDialogProps = {
   open: boolean;
   handleClose: () => void;
 }
 
-const HelpDialog: FunctionComponent<HelpDialogProps> = ({ open, handleClose }: HelpDialogProps) => {
+const SettingsDialog: FunctionComponent<SettingsDialogProps> = ({ open, handleClose }: SettingsDialogProps) => {
   return (
-    <Dialog open={open} onClose={handleClose} aria-labelledby='help-dialog-title'>
-      <DialogTitle id='help-dialog-title'>What is this all about?</DialogTitle>
+    <Dialog open={open} onClose={handleClose} aria-labelledby='settings-dialog-title'>
+      <DialogTitle id='settings-dialog-title'>What is this all about?</DialogTitle>
       <DialogContent>
+        <h2>F.A.Q.</h2>
+        <h3>What is this all about?</h3>
         <DialogContentText>Add the Habits you want to track. Every time you perform it, click on the card to update
           its status. If some times passes and you don&apos;t perform that habit, the card color will start to decay from
           green to red based on the timeframe you chose on creation.
@@ -32,4 +34,4 @@ const HelpDialog: FunctionComponent<HelpDialogProps> = ({ open, handleClose }: H
   );
 }
 
-export default HelpDialog;
+export default SettingsDialog;
