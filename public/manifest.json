@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Habits Tab",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Tab to remind you of your habits. Replaces your browser's default New Tab.",
   "icons": {
     "128": "img/icon128.png",
