@@ -28,7 +28,8 @@ export default function App() {
   const classes = useStyles();
 
   const [cards, setCards] = useState<Card[]>([]);
-  const [hidden, setHidden] = useState<boolean>(false);
+  const [hideCards, setHideCards] = useState<boolean>(false);
+  const [trackWeight, setTrackWeight] = useState<boolean>(false);
   const [showSettings, setShowSettings] = useState(false);
   const [addCardOpen, setAddCardOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -45,18 +46,24 @@ export default function App() {
         setCards(changes['cards'].newValue);
       }
       if (changes['hidden']) {
-        setHidden(changes['hidden'].newValue);
+        setHideCards(changes['hidden'].newValue);
+      }
+      if (changes['trackWeight']) {
+        setTrackWeight(changes['trackWeight'].newValue);
       }
     });
   }, []);
 
   useEffect(() => {
-    chrome.storage.sync.get(['cards', 'hidden'], (data) => {
+    chrome.storage.sync.get(['cards', 'hidden', 'trackWeight'], (data) => {
       if (data.cards) {
         setCards(data.cards);
       }
       if (data.hidden) {
-        setHidden(data.hidden);
+        setHideCards(data.hidden);
+      }
+      if (data.trackWeight) {
+        setTrackWeight(data.trackWeight);
       }
     });
   }, []);
@@ -85,16 +92,18 @@ export default function App() {
     chrome.storage.sync.set({ cards });
   }
 
-  const handleSetHidden = (event: any): void => {
-    const hidden = event.target.checked;
-    chrome.storage.sync.set({ hidden });
+  const handleValueChange = (event: any): void => {
+    const name = event.target.name;
+    const checked = event.target.checked;
+
+    chrome.storage.sync.set({ [name]: checked });
   }
 
   return (
     <Fragment>
       <Container>
 
-        {!hidden && 
+        {!hideCards && 
           <Box display='flex' flexWrap='wrap' justifyContent='center' alignItems='center'>
             {cards.length ? cards.map((element, i) => {
               return (
@@ -112,8 +121,9 @@ export default function App() {
 
         <SettingsDialog
           open={showSettings}
-          hidden={hidden}
-          handleSetHidden={handleSetHidden}
+          hideCards={hideCards}
+          trackWeight={trackWeight}
+          handleValueChange={handleValueChange}
           handleClose={(): void => setShowSettings(false)} />
 
         <AddCardDialog

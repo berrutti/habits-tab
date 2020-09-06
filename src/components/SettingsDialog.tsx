@@ -12,20 +12,25 @@ import {
 
 type SettingsDialogProps = {
   open: boolean;
-  hidden: boolean;
+  hideCards: boolean;
+  trackWeight: boolean;
   handleClose: () => void;
-  handleSetHidden: (event: any) => void;
+  handleValueChange: (event: any) => void;
 }
 
-const SettingsDialog: FunctionComponent<SettingsDialogProps> = ({ open, handleClose, hidden, handleSetHidden }: SettingsDialogProps) => {
+const SettingsDialog: FunctionComponent<SettingsDialogProps> = ({ open, handleClose, hideCards, trackWeight, handleValueChange }: SettingsDialogProps) => {
   return (
     <Dialog open={open} onClose={handleClose} aria-labelledby='settings-dialog-title'>
       <DialogTitle id='settings-dialog-title'>Settings</DialogTitle>
       <DialogContent>
         <h3>Application</h3>
         <FormControlLabel
-          control={<Checkbox checked={hidden} onChange={handleSetHidden} name="Hidden" />}
+          control={<Checkbox checked={hideCards} onChange={handleValueChange} name="Hidden" />}
           label="Hide cards"
+        />
+        <FormControlLabel
+          control={<Checkbox checked={trackWeight} onChange={handleValueChange} name="trackWeight" />}
+          label="Track Weight"
         />
         <h3>Info</h3>
         <DialogContentText>Add the Habits you want to track. Every time you perform it, click its card to update it.
