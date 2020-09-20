@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Container, Box, Fab, makeStyles } from '@material-ui/core';
-import { AddCircle, Settings } from '@material-ui/icons';
+import { Container, Box, Fab, makeStyles, ExpansionPanel, ExpansionPanelSummary, Typography, ExpansionPanelDetails } from '@material-ui/core';
+import { AddCircle, ExpandMore, Settings } from '@material-ui/icons';
 import { getCurrentMilliseconds } from './utils/functions'
 import HabitCard from './components/HabitCard';
 import AddCardDialog from './components/AddCardDialog';
@@ -13,7 +13,7 @@ import WeightChart from './components/WeightChart';
 export default function App() {
   const useStyles = makeStyles(() => ({
     emptyHeader: {
-      color: 'white'
+      color: '#222'
     },
     addIcon: {
       position: 'fixed',
@@ -27,7 +27,15 @@ export default function App() {
     },
   }));
   const classes = useStyles();
-
+  const weightData = [
+    { date: '2020-09-09', weight: 85 },
+    { date: '2020-09-10', weight: 84 },
+    { date: '2020-09-11', weight: 83 },
+    { date: '2020-09-12', weight: 82 },
+    { date: '2020-09-13', weight: 81.5 },
+    { date: '2020-09-14', weight: 81 },
+    { date: '2020-09-15', weight: 80.8 },
+  ];
   const [cards, setCards] = useState<Card[]>([]);
   const [hideCards, setHideCards] = useState<boolean>(false);
   const [trackWeight, setTrackWeight] = useState<boolean>(false);
@@ -104,24 +112,45 @@ export default function App() {
     <Fragment>
       <Container>
 
-        {!hideCards && 
-          <Box display='flex' flexWrap='wrap' justifyContent='center' alignItems='center'>
-            {cards.length ? cards.map((element, i) => {
-              return (
-                <HabitCard
-                  key={i}
-                  card={element}
-                  currentTime={currentTime}
-                  handleDelete={handleDeleteCard}
-                  handleUpdate={handleUpdateCard}
-                />
-              );
-            }) : <h1 className={classes.emptyHeader}>Add a New Habit by clicking the + button</h1>}
-          </Box>
-        }
-        <Box>
-          <WeightChart data1={'hola'}></WeightChart>
-        </Box>
+        <ExpansionPanel>
+          <ExpansionPanelSummary
+            expandIcon={<ExpandMore />}
+            aria-controls="cards-content"
+            id="cards-header"
+          >
+            <Typography>Habits</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            {!hideCards &&
+              <Box display='flex' flexWrap='wrap' justifyContent='center' alignItems='center'>
+                {cards.length ? cards.map((element, i) => {
+                  return (
+                    <HabitCard
+                      key={i}
+                      card={element}
+                      currentTime={currentTime}
+                      handleDelete={handleDeleteCard}
+                      handleUpdate={handleUpdateCard}
+                    />
+                  );
+                }) : <h1 className={classes.emptyHeader}>Add a New Habit by clicking the + button</h1>}
+              </Box>
+            }
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+        <ExpansionPanel>
+          <ExpansionPanelSummary
+            expandIcon={<ExpandMore />}
+            aria-controls="weight-content"
+            id="weight-header"
+          >
+            <Typography>Weight</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <WeightChart data={weightData}></WeightChart>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+
 
         <SettingsDialog
           open={showSettings}

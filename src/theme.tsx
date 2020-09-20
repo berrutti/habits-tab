@@ -13,7 +13,7 @@ const theme = createMuiTheme({
           height: '100%',
         },
         body: {
-          backgroundImage: 'linear-gradient(0deg, rgba(46,120,227,1) 50%, rgba(46,149,227,1) 100%)',
+          backgroundImage: 'linear-gradient(0deg, #F5F8FD 50%, #FFFFFF 100%)',
           minHeight: '100%',
         },
       },
