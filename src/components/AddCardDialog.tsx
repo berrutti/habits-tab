@@ -16,7 +16,7 @@ import {
   TextField
 } from '@material-ui/core';
 
-import { getCurrentMiliseconds } from '../utils/functions';
+import { getCurrentMilliseconds } from '../utils/functions';
 import { Timeframe, Card } from '../utils/types';
 
 type AddCardDialogProps = {
@@ -52,7 +52,7 @@ const AddCardDialog: FunctionComponent<AddCardDialogProps> = ({ open, handleClos
     event.preventDefault();
     if (!event.target.errors) {
       handleClose();
-      handleAddCard({ name, timeframe, lastClicked: getCurrentMiliseconds(), isRegular });
+      handleAddCard({ name, timeframe, lastClicked: getCurrentMilliseconds(), isRegular });
       setName('');
       setIsRegular(true);
       setTimeframe(Timeframe.Daily);

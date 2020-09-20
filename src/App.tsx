@@ -1,13 +1,14 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Container, Box, Fab, makeStyles } from '@material-ui/core';
 import { AddCircle, Settings } from '@material-ui/icons';
-import { getCurrentMiliseconds } from './utils/functions'
+import { getCurrentMilliseconds } from './utils/functions'
 import HabitCard from './components/HabitCard';
 import AddCardDialog from './components/AddCardDialog';
-import ConfirmDeleteDialog from './components/ConfirmDeleteDialog';
+import ConfirmDialog from './components/ConfirmDialog';
 import SettingsDialog from './components/SettingsDialog';
 import useInterval from './hooks/useInterval';
 import { Card } from './utils/types';
+import WeightChart from './components/WeightChart';
 
 export default function App() {
   const useStyles = makeStyles(() => ({
@@ -34,10 +35,10 @@ export default function App() {
   const [addCardOpen, setAddCardOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [cardToDelete, setCardToDelete] = useState('');
-  const [currentTime, setCurrentTime] = useState(getCurrentMiliseconds());
+  const [currentTime, setCurrentTime] = useState(getCurrentMilliseconds());
 
   useInterval(() => {
-    setCurrentTime(getCurrentMiliseconds());
+    setCurrentTime(getCurrentMilliseconds());
   }, 5000);
 
   useEffect(() => {
@@ -87,7 +88,7 @@ export default function App() {
   const handleUpdateCard = (name: string): void => {
     const cardToUpdate = cards.find(currentCard => currentCard.name === name);
     if (cardToUpdate) {
-      cardToUpdate.lastClicked = getCurrentMiliseconds();
+      cardToUpdate.lastClicked = getCurrentMilliseconds();
     }
     chrome.storage.sync.set({ cards });
   }
@@ -118,6 +119,9 @@ export default function App() {
             }) : <h1 className={classes.emptyHeader}>Add a New Habit by clicking the + button</h1>}
           </Box>
         }
+        <Box>
+          <WeightChart data1={'hola'}></WeightChart>
+        </Box>
 
         <SettingsDialog
           open={showSettings}
@@ -131,8 +135,10 @@ export default function App() {
           handleClose={(): void => setAddCardOpen(false)}
           handleAddCard={handleAddCard} />
 
-        <ConfirmDeleteDialog
+        <ConfirmDialog
           open={confirmDialogOpen}
+          title='Are you sure you want to delete this Habit?'
+          message='This action is cannot be undone'
           handleConfirm={deleteCard}
           handleClose={(): void => setConfirmDialogOpen(false)} />
 
