@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Container, Box, Fab, makeStyles, ExpansionPanel, ExpansionPanelSummary, Typography, ExpansionPanelDetails } from '@material-ui/core';
+import { Container, Box, Fab, makeStyles, Accordion, AccordionSummary, Typography, AccordionDetails } from '@material-ui/core';
 import { AddCircle, ExpandMore, Settings } from '@material-ui/icons';
 import { getCurrentMilliseconds } from './utils/functions'
 import HabitCard from './components/HabitCard';
@@ -37,7 +37,7 @@ export default function App() {
     { date: '2020-09-15', weight: 80.8 },
   ];
   const [cards, setCards] = useState<Card[]>([]);
-  const [hideCards, setHideCards] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState<string>('cards');
   const [trackWeight, setTrackWeight] = useState<boolean>(false);
   const [showSettings, setShowSettings] = useState(false);
   const [addCardOpen, setAddCardOpen] = useState(false);
@@ -54,9 +54,6 @@ export default function App() {
       if (changes['cards']) {
         setCards(changes['cards'].newValue);
       }
-      if (changes['hidden']) {
-        setHideCards(changes['hidden'].newValue);
-      }
       if (changes['trackWeight']) {
         setTrackWeight(changes['trackWeight'].newValue);
       }
@@ -64,12 +61,9 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    chrome.storage.sync.get(['cards', 'hidden', 'trackWeight'], (data) => {
+    chrome.storage.sync.get(['cards', 'trackWeight'], (data) => {
       if (data.cards) {
         setCards(data.cards);
-      }
-      if (data.hidden) {
-        setHideCards(data.hidden);
       }
       if (data.trackWeight) {
         setTrackWeight(data.trackWeight);
@@ -108,53 +102,54 @@ export default function App() {
     chrome.storage.sync.set({ [name]: checked });
   }
 
+  const handlePanelChanges = (panel: string) => (_: object, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : '');
+  };
+
   return (
     <Fragment>
       <Container>
 
-        <ExpansionPanel>
-          <ExpansionPanelSummary
+        <Accordion expanded={expanded === 'habits'} onChange={handlePanelChanges('habits')}>
+          <AccordionSummary
             expandIcon={<ExpandMore />}
             aria-controls="cards-content"
             id="cards-header"
           >
             <Typography>Habits</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            {!hideCards &&
-              <Box display='flex' flexWrap='wrap' justifyContent='center' alignItems='center'>
-                {cards.length ? cards.map((element, i) => {
-                  return (
-                    <HabitCard
-                      key={i}
-                      card={element}
-                      currentTime={currentTime}
-                      handleDelete={handleDeleteCard}
-                      handleUpdate={handleUpdateCard}
-                    />
-                  );
-                }) : <h1 className={classes.emptyHeader}>Add a New Habit by clicking the + button</h1>}
-              </Box>
-            }
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel>
-          <ExpansionPanelSummary
+          </AccordionSummary>
+          <AccordionDetails>
+            <Box display='flex' flexWrap='wrap' justifyContent='center' alignItems='center'>
+              {cards.length ? cards.map((element, i) => {
+                return (
+                  <HabitCard
+                    key={i}
+                    card={element}
+                    currentTime={currentTime}
+                    handleDelete={handleDeleteCard}
+                    handleUpdate={handleUpdateCard}
+                  />
+                );
+              }) : <h1 className={classes.emptyHeader}>Add a New Habit by clicking the + button</h1>}
+            </Box>
+          </AccordionDetails>
+        </Accordion>
+        {trackWeight && <Accordion expanded={expanded === 'weight'} onChange={handlePanelChanges('weight')}>
+          <AccordionSummary
             expandIcon={<ExpandMore />}
             aria-controls="weight-content"
             id="weight-header"
           >
             <Typography>Weight</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
+          </AccordionSummary>
+          <AccordionDetails>
             <WeightChart data={weightData}></WeightChart>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+          </AccordionDetails>
+        </Accordion>}
 
 
         <SettingsDialog
           open={showSettings}
-          hideCards={hideCards}
           trackWeight={trackWeight}
           handleValueChange={handleValueChange}
           handleClose={(): void => setShowSettings(false)} />

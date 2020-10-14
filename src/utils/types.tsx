@@ -1,7 +1,6 @@
 export interface Card {
   name: string;
   lastClicked: number;
-  isRegular: boolean;
   timeframe: number;
 }
 
