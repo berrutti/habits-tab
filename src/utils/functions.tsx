@@ -1,6 +1,6 @@
 const millisecondsInADay = 86400000;
 
-export const getCurrentMiliseconds = (): number => new Date().getTime();
+export const getCurrentMilliseconds = (): number => new Date().getTime();
 
 export const getDateString = (lastTimeClicked: number): string => {
     const options = {

@@ -22,7 +22,7 @@ const HabitCard: FunctionComponent<HabitCardProps> = ({ card, currentTime, handl
     percentage = ellapsedMilliseconds / upperbound;
 
     percentage = (percentage > 1) ? 1 : percentage;
-    const hue = card.isRegular ? 150 * (1 - percentage) : 150 * percentage;
+    const hue = 150 * (1 - percentage);
     return `hsl(${hue}, 50%, 50%)`;
   }
 

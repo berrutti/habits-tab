@@ -8,13 +8,17 @@ import {
   DialogTitle,
 } from '@material-ui/core';
 
-type ConfirmDeleteDialogProps = {
+type ConfirmDialogProps = {
   open: boolean;
+  title: string;
+  message: string;
+  cancelText?: string;
+  okText?: string;
   handleClose: (() => void);
   handleConfirm: (() => void);
 }
 
-const ConfirmDeleteDialog: FunctionComponent<ConfirmDeleteDialogProps> = ({ open, handleClose, handleConfirm }: ConfirmDeleteDialogProps) => {
+const ConfirmDialog: FunctionComponent<ConfirmDialogProps> = ({ open, title, message, cancelText = 'Cancel', okText = 'Ok', handleClose, handleConfirm }: ConfirmDialogProps) => {
   return (
     <Dialog
       onClose={handleClose}
@@ -24,22 +28,22 @@ const ConfirmDeleteDialog: FunctionComponent<ConfirmDeleteDialogProps> = ({ open
       aria-labelledby='confirmation-dialog-title'
       open={open}
     >
-      <DialogTitle id='confirmation-dialog-title'>Are you sure you want to delete this Habit?</DialogTitle>
+      <DialogTitle id='confirmation-dialog-title'>{title}</DialogTitle>
       <DialogContent dividers>
-        This action is cannot be undone
+        {message}
       </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={handleClose} color='primary'>
-          Cancel
+          {cancelText}
         </Button>
         <Button onClick={handleConfirm} color='primary'>
-          Ok
+          {okText}
         </Button>
       </DialogActions>
     </Dialog>
   );
 }
 
-export default ConfirmDeleteDialog;
+export default ConfirmDialog;
 
 

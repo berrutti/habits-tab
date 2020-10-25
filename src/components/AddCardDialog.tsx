@@ -8,15 +8,13 @@ import {
   DialogContentText,
   DialogTitle,
   FormControl,
-  FormControlLabel,
   InputLabel,
   MenuItem,
   Select,
-  Switch,
   TextField
 } from '@material-ui/core';
 
-import { getCurrentMiliseconds } from '../utils/functions';
+import { getCurrentMilliseconds } from '../utils/functions';
 import { Timeframe, Card } from '../utils/types';
 
 type AddCardDialogProps = {
@@ -27,7 +25,6 @@ type AddCardDialogProps = {
 
 const AddCardDialog: FunctionComponent<AddCardDialogProps> = ({ open, handleClose, handleAddCard }: AddCardDialogProps) => {
   const [name, setName] = useState('');
-  const [isRegular, setIsRegular] = useState(true);
   const [timeframe, setTimeframe] = useState(Timeframe.Daily);
 
   const handleTimeframeChange = (event: ChangeEvent<{
@@ -43,18 +40,12 @@ const AddCardDialog: FunctionComponent<AddCardDialogProps> = ({ open, handleClos
     setName(event.target.value);
   };
 
-  const handleSwitchChange = (event: any): void => {
-    event.preventDefault();
-    setIsRegular(!event.target.checked)
-  }
-
   const handleSubmit = (event: ChangeEvent<HTMLFormElement>): void => {
     event.preventDefault();
     if (!event.target.errors) {
       handleClose();
-      handleAddCard({ name, timeframe, lastClicked: getCurrentMiliseconds(), isRegular });
+      handleAddCard({ name, timeframe, lastClicked: getCurrentMilliseconds() });
       setName('');
-      setIsRegular(true);
       setTimeframe(Timeframe.Daily);
     }
   }
@@ -80,15 +71,6 @@ const AddCardDialog: FunctionComponent<AddCardDialogProps> = ({ open, handleClos
               type='text'
               value={name}
               onChange={handleNameChange} />
-
-            <FormControlLabel
-              label="Reverse"
-              control={<Switch
-                checked={!isRegular}
-                onChange={handleSwitchChange}
-                name="reverse"
-                color="primary"
-              />} />
 
             <FormControl fullWidth>
               <InputLabel id='timeframe-label'>Timeframe</InputLabel>
