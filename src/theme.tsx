@@ -3,7 +3,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#4062bb',
+      main: '#2E95E3',
     },
   },
   overrides: {
@@ -13,7 +13,7 @@ const theme = createMuiTheme({
           height: '100%',
         },
         body: {
-          backgroundImage: 'linear-gradient(0deg, #F5F8FD 50%, #FFFFFF 100%)',
+          backgroundColor: '#F5F8FD',
           minHeight: '100%',
         },
       },

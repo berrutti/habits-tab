@@ -8,7 +8,6 @@ import ConfirmDialog from './components/ConfirmDialog';
 import SettingsDialog from './components/SettingsDialog';
 import useInterval from './hooks/useInterval';
 import { Card } from './utils/types';
-import WeightChart from './components/WeightChart';
 
 export default function App() {
   const useStyles = makeStyles(() => ({
@@ -27,18 +26,8 @@ export default function App() {
     },
   }));
   const classes = useStyles();
-  const weightData = [
-    { date: '2020-09-09', weight: 85 },
-    { date: '2020-09-10', weight: 84 },
-    { date: '2020-09-11', weight: 83 },
-    { date: '2020-09-12', weight: 82 },
-    { date: '2020-09-13', weight: 81.5 },
-    { date: '2020-09-14', weight: 81 },
-    { date: '2020-09-15', weight: 80.8 },
-  ];
   const [cards, setCards] = useState<Card[]>([]);
-  const [expanded, setExpanded] = useState<string>('cards');
-  const [trackWeight, setTrackWeight] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState<string>('');
   const [showSettings, setShowSettings] = useState(false);
   const [addCardOpen, setAddCardOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -54,19 +43,19 @@ export default function App() {
       if (changes['cards']) {
         setCards(changes['cards'].newValue);
       }
-      if (changes['trackWeight']) {
-        setTrackWeight(changes['trackWeight'].newValue);
+      if (changes['expanded']) {
+        setExpanded(changes['expanded'].newValue);
       }
     });
   }, []);
 
   useEffect(() => {
-    chrome.storage.sync.get(['cards', 'trackWeight'], (data) => {
-      if (data.cards) {
-        setCards(data.cards);
+    chrome.storage.sync.get(['cards', 'expanded'], ({ cards, expanded }) => {
+      if (cards) {
+        setCards(cards);
       }
-      if (data.trackWeight) {
-        setTrackWeight(data.trackWeight);
+      if (expanded) {
+        setExpanded(expanded);
       }
     });
   }, []);
@@ -103,7 +92,7 @@ export default function App() {
   }
 
   const handlePanelChanges = (panel: string) => (_: object, isExpanded: boolean) => {
-    setExpanded(isExpanded ? panel : '');
+    chrome.storage.sync.set({ expanded: isExpanded ? panel : '' });
   };
 
   return (
@@ -134,23 +123,9 @@ export default function App() {
             </Box>
           </AccordionDetails>
         </Accordion>
-        {trackWeight && <Accordion expanded={expanded === 'weight'} onChange={handlePanelChanges('weight')}>
-          <AccordionSummary
-            expandIcon={<ExpandMore />}
-            aria-controls="weight-content"
-            id="weight-header"
-          >
-            <Typography>Weight</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <WeightChart data={weightData}></WeightChart>
-          </AccordionDetails>
-        </Accordion>}
-
 
         <SettingsDialog
           open={showSettings}
-          trackWeight={trackWeight}
           handleValueChange={handleValueChange}
           handleClose={(): void => setShowSettings(false)} />
 
